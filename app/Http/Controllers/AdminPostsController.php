@@ -1,15 +1,15 @@
 <?php
 
-
-
 namespace App\Http\Controllers;
-//use Illuminate\Http\UsersRequest;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Post;
 use App\Photo;
 use App\User;
 use App\Role;
 
-class AdminUsersController extends Controller
+class AdminPostsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,8 @@ class AdminUsersController extends Controller
     public function index()
     {
         //
-        $users = User::all();
-        return view('admin.users.index',compact('users'));
+        $posts = Post::all();
+        return view('admin.posts.index',compact('posts'));
     }
 
     /**
@@ -31,8 +31,7 @@ class AdminUsersController extends Controller
     public function create()
     {
         //
-        $roles = Role::pluck('name','id')->all();
-        return view('admin.users.create',compact('roles'));
+        return view('admin.posts.create');
     }
 
     /**
@@ -44,23 +43,19 @@ class AdminUsersController extends Controller
     public function store(Request $request)
     {
         //
-        User::create($request->all());
-        
-        //return $request->all();
         $input = $request->all();
+        $user = Auth::user();
         if ($file = $request->file('photo_id')) {
 
             $name = time().$file->getClientOriginalName();
             $file->move('images',$name);
             $photo = Photo::create(['file'=>$name]);
             $input['photo_id'] = $photo->id;
-            # code...
+            
         }
 
-        $input['password'] = bcrypt($request->password);
-
-        User::create($input);
-        return redirect('/admin/users');
+         //$user->posts()::create($input);
+         return redirect('/admin/posts');
     }
 
     /**
@@ -72,7 +67,6 @@ class AdminUsersController extends Controller
     public function show($id)
     {
         //
-        return view('admin.users.show');
     }
 
     /**
@@ -84,10 +78,8 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         //
-        $user = User::findOrFail($id);
-
-        $roles = Role::pluck('name','id')->all();
-        return view('admin.users.edit',compact('user','roles'));
+        $posts = Post::all();
+        return view('admin.posts.edit',compact('posts'));
     }
 
     /**
