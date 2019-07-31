@@ -1,15 +1,10 @@
 <?php
 
-
-
 namespace App\Http\Controllers;
-//use Illuminate\Http\UsersRequest;
+use App\Category;
 use Illuminate\Http\Request;
-use App\Photo;
-use App\User;
-use App\Role;
 
-class AdminUsersController extends Controller
+class AdminCategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,9 +14,9 @@ class AdminUsersController extends Controller
     public function index()
     {
         //
-        $users = User::all();
-        // dd($users);
-        return view('admin.users.index',compact('users'));
+        $categories = Category::all();
+
+        return view('admin.categories.index',compact('categories'));
     }
 
     /**
@@ -32,8 +27,7 @@ class AdminUsersController extends Controller
     public function create()
     {
         //
-        $roles = Role::pluck('name','id')->all();
-        return view('admin.users.create',compact('roles'));
+        return view('admin.categories.create');
     }
 
     /**
@@ -45,23 +39,11 @@ class AdminUsersController extends Controller
     public function store(Request $request)
     {
         //
-        User::create($request->all());
-        
-        //return $request->all();
-        $input = $request->all();
-        if ($file = $request->file('photo_id')) {
 
-            $name = time().$file->getClientOriginalName();
-            $file->move('images',$name);
-            $photo = Photo::create(['file'=>$name]);
-            $input['photo_id'] = $photo->id;
-            # code...
-        }
+        Category::create($request->all());
 
-        $input['password'] = bcrypt($request->password);
-
-        User::create($input); 
-        return redirect('/admin/users');
+        return
+         redirect('/admin/categories');
     }
 
     /**
@@ -73,7 +55,6 @@ class AdminUsersController extends Controller
     public function show($id)
     {
         //
-        return view('admin.users.show');
     }
 
     /**
@@ -85,10 +66,9 @@ class AdminUsersController extends Controller
     public function edit($id)
     {
         //
-        $user = User::findOrFail($id);
+        $category = Category::findOrFail($id);
 
-        $roles = Role::pluck('name','id')->all();
-        return view('admin.users.edit',compact('user','roles'));
+        return view('admin.categories.edit',compact('category'));
     }
 
     /**
@@ -101,6 +81,12 @@ class AdminUsersController extends Controller
     public function update(Request $request, $id)
     {
         //
+         $category=Category::findOrFail($id);
+
+         $category->update($request->all());
+
+         return redirect('/admin/categories');
+
     }
 
     /**
@@ -112,5 +98,8 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+        Category::findOrFail($id)->delete();
+
+        return redirect('admin\categories');
     }
 }

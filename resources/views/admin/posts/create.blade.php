@@ -5,7 +5,7 @@
 
  <h1>Create Post</h1>
 
- {{  Form::open( array('url' => action('AdminPostsController@store'), 'files'=>true,'method'=>'post') )  }}
+ {{  Form::open( array('url' => action('AdminPostsController@store'), 'files'=>true,'method'=>'post'))}}
 
 <div class="form-group">
  {!! form::label('title','Title:')!!}
@@ -15,7 +15,7 @@
 
 <div class="form-group">
  {!! form::label('category_id','Category:')!!}
- {!!form::select('category_id',[1=>'PHP',0=>'Javascript',2=>'Python',3=>'Java'],null,['class'=>'form-control'])!!}
+ {!!form::select('category_id',[''=>'Choose Categories']+$categories,null,['class'=>'form-control'])!!}
 </div>
 
 

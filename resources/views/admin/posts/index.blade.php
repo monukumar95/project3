@@ -12,8 +12,8 @@
  			<th>Photo</th>
  			<th>Owner</th>
  			<th>Category</th>
- 			
  			<th>Title</th>
+ 			<th>Body</th>
  			<th>Created_at</th>
  			<th>Updated_at</th>
  		</tr>
@@ -24,12 +24,12 @@
  		@foreach($posts as $post)
  		<tr>
  		<td>{{$post->id}}</td>
- 		<td><img height="50" src="{{$post->photo_id}}"></td>
- 		<td>{{$post->user->name}}</td>
- 		<td>{{$post->category_id}}</td>
+ 		<td><img height="50" src="{{$post->photo ? $post->photo->file : 'photo not found'}}"></td>
+ 		<td><a href="{{route('posts.edit',$post->id)}}">{{$post->user->name}}</a></td>
+ 		<td>{{$post->category ? $post->category->name : 'Uncategoriged'}}</td>
  		
  		<td>{{$post->title}}</td>
- 		<td>{{$post->body}}</td>
+ 		<td>{{str_limit($post->body,30)}}</td>
  		<td>{{$post->created_at->diffForHumans()}}</td>
  		<td>{{$post->updated_at->diffForHumans()}}</td>
  		</tr>

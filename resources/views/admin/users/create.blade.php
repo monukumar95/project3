@@ -6,7 +6,7 @@
 
  <h1>admin create working</h1>
 
- {{  Form::open( array('url' => action('AdminUsersController@store'), 'files'=>true,'method'=>'post') )  }}
+ {{  Form::open( array('url' => action('AdminUsersController@store'), 'files'=>true,'method'=>'post') ) }}
 
 <div class="form-group">
  {!! form::label('name','Name:')!!}
